@@ -1,0 +1,38 @@
+#+TITLE: package.json
+
+* Dependencies
+
+  React frontend.
+  #+NAME: deps-react
+  #+BEGIN_SRC json
+  "react": "^16.2.0",
+  "react-dom": "^16.2.0",
+  "react-scripts": "1.1.1"
+  #+END_SRC
+
+* Scripts
+
+  Defaults React scripts.
+  #+NAME: scripts-react
+  #+BEGIN_SRC json
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test --env=jsdom",
+  "eject": "react-scripts eject"
+  #+END_SRC
+
+* Projet File  :noexport:
+
+  #+BEGIN_SRC json :tangle ../package.json :noweb yes
+  {
+    "name": "demo-react",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      <<deps-react>>
+    },
+    "scripts": {
+      <<scripts-react>>
+    }
+  }
+  #+END_SRC
