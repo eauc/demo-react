@@ -1,7 +1,7 @@
-#+TITLE: package.json
+#+TITLE: Package configuration
 #+SETUPFILE: ./publish.setup
 
-#+INCLUDE: sitemap.org :lines "3-"
+[[./index.html][Documentation index]]
 
 * Dependencies
 
