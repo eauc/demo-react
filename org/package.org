@@ -1,4 +1,7 @@
 #+TITLE: package.json
+#+SETUPFILE: ./publish.setup
+
+#+INCLUDE: sitemap.org :lines "3-"
 
 * Dependencies
 
