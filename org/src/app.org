@@ -1,0 +1,77 @@
+#+TITLE: Main application component
+#+SETUPFILE: ../publish.setup
+
+[[../index.org][Documentation index]]
+
+* Component
+
+  #+NAME: app component
+  #+BEGIN_SRC js2
+  const App = () => (
+      <div className="App">
+      <header className="App-header">
+      <h1 className="App-title">Welcome to React</h1>
+      </header>
+      <p className="App-intro">
+      To get started, edit <code>src/App.js</code> and save to reload.
+      </p>
+      </div>
+  );
+  #+END_SRC
+
+* Styles
+
+  #+BEGIN_SRC css :tangle ../../src/App.css
+  .App {
+    text-align: center;
+  }
+
+  .App-header {
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+  }
+
+  .App-title {
+    font-size: 1.5em;
+  }
+
+  .App-intro {
+    font-size: large;
+  }
+  #+END_SRC
+
+* Tests
+
+  #+NAME: app component test
+  #+BEGIN_SRC js2
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(<App />, div);
+    ReactDOM.unmountComponentAtNode(div);
+  });
+  #+END_SRC
+
+* Files :noexport:
+
+** Component
+
+  #+BEGIN_SRC js2 :tangle ../../src/App.js :noweb yes
+  import React, { Component } from 'react';
+  import './App.css';
+
+  <<app component>>
+  
+  export default App;
+  #+END_SRC
+
+** Tests
+
+  #+BEGIN_SRC js2 :tangle ../../src/App.test.js :noweb yes
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+  import App from './App';
+
+  <<app component test>>
+  #+END_SRC
