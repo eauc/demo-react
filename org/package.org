@@ -19,6 +19,13 @@
   "react-bootstrap": "^0.32.1"
   #+END_SRC
 
+  Redux state management.
+  #+NAME: deps-redux
+  #+BEGIN_SRC json
+  "redux": "^3.7.2",
+  "react-redux": "^5.0.7"
+  #+END_SRC
+
 * Scripts
 
   Defaults React scripts.
@@ -39,7 +46,8 @@
     "private": true,
     "dependencies": {
       <<deps-react>>,
-      <<deps-bootstrap>>
+      <<deps-bootstrap>>,
+      <<deps-redux>>
     },
     "scripts": {
       <<scripts-react>>
