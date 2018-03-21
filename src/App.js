@@ -1,14 +1,23 @@
-import React, { Component } from 'react';
-import './App.css';
+import React from "react";
+import {Col, Grid, Navbar, Row} from "react-bootstrap";
+import "./App.css";
 
 const App = () => (
-    <div className="App">
-    <header className="App-header">
-    <h1 className="App-title">Welcome to React</h1>
-    </header>
-    <p className="App-intro">
-    To get started, edit <code>src/App.js</code> and save to reload.
-    </p>
+    <div>
+    <Navbar>
+    <Navbar.Header>
+    <Navbar.Brand>
+    React Demo
+    </Navbar.Brand>
+    </Navbar.Header>
+    </Navbar>
+    <Grid>
+    <Row>
+    <Col>
+    Welcome to my demo !
+    </Col>
+    </Row>
+    </Grid>
     </div>
 );
 
