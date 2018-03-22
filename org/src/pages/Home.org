@@ -1,0 +1,47 @@
+#+TITLE: Home page
+#+SETUPFILE: ../../publish.setup
+
+[[../../index.org][Documentation index]]
+
+* Page
+
+  #+NAME: home page
+  #+BEGIN_SRC rjsx
+  export const HomePage = ({example}) => (
+    <Grid>
+      <Row>
+	<Col>
+	  Welcome to {example} !
+	</Col>
+      </Row>
+    </Grid>
+  );
+  #+END_SRC
+
+** Connect to Redux store
+
+   #+NAME: home page connector
+   #+BEGIN_SRC js2
+   const mapStateToProps = (state) => ({
+     example: state.example,
+   });
+
+   const mapDispatchToProps = (dispatch) => ({});
+
+   export default connect(
+     mapStateToProps,
+     mapDispatchToProps
+   )(HomePage);
+   #+END_SRC
+
+* Files :noexport:
+
+  #+BEGIN_SRC js2 :tangle ../../../src/pages/Home.js :noweb yes :mkdirp yes
+  import React from "react";
+  import {connect} from 'react-redux';
+  import {Col, Grid, Row} from "react-bootstrap";
+
+  <<home page>>
+
+  <<home page connector>>
+  #+END_SRC

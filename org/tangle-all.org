@@ -41,9 +41,6 @@
 	  (directory-files-recursive (file-name-directory (buffer-file-name)) "\\.org$" 20)))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :results none
 (tangle-all)
 #+END_SRC
-
-#+RESULTS:
-| /home/auclair/code/demo-react/package.json |

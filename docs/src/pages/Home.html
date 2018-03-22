@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-03-19 Mon 12:04 -->
+<!-- 2018-03-22 Thu 16:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Main application component</title>
+<title>Home page</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="auclair emmanuel" />
 <style type="text/css">
@@ -238,84 +238,63 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Main application component</h1>
+<h1 class="title">Home page</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org661b82c">Component</a></li>
-<li><a href="#orgd6030a9">Styles</a></li>
-<li><a href="#orgd806e57">Tests</a></li>
+<li><a href="#orge45b7ce">Page</a>
+<ul>
+<li><a href="#org026e776">Connect to Redux store</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <p>
-<a href="../index.html">Documentation index</a>
+<a href="../../index.html">Documentation index</a>
 </p>
 
-<div id="outline-container-org661b82c" class="outline-2">
-<h2 id="org661b82c">Component</h2>
-<div class="outline-text-2" id="text-org661b82c">
+<div id="outline-container-orge45b7ce" class="outline-2">
+<h2 id="orge45b7ce">Page</h2>
+<div class="outline-text-2" id="text-orge45b7ce">
 <div class="org-src-container">
-<pre class="src src-js2" id="orgc4c7601">const App = <span style="color: #00ff00; font-weight: bold;">()</span> =&gt; <span style="color: #00ff00; font-weight: bold;">(</span>
-    &lt;div className="App"&gt;
-    &lt;header className="App-header"&gt;
-    &lt;h1 className="App-title"&gt;Welcome to React&lt;/h1&gt;
-    &lt;/header&gt;
-    &lt;p className="App-intro"&gt;
-    To get started, edit &lt;code&gt;src/App.js&lt;/code&gt; and save to reload.
-    &lt;/p&gt;
-    &lt;/div&gt;
+<pre class="src src-rjsx" id="orgdbf8334">export const HomePage = <span style="color: #00ff00; font-weight: bold;">(</span><span style="color: #ff00ff; font-weight: bold;">{</span>example<span style="color: #ff00ff; font-weight: bold;">}</span><span style="color: #00ff00; font-weight: bold;">)</span> =&gt; <span style="color: #00ff00; font-weight: bold;">(</span>
+  &lt;Grid&gt;
+    &lt;Row&gt;
+      &lt;Col&gt;
+        Welcome to <span style="color: #ff00ff; font-weight: bold;">{</span>example<span style="color: #ff00ff; font-weight: bold;">}</span> !
+      &lt;/Col&gt;
+    &lt;/Row&gt;
+  &lt;/Grid&gt;
 <span style="color: #00ff00; font-weight: bold;">)</span>;
 </pre>
 </div>
 </div>
-</div>
 
-<div id="outline-container-orgd6030a9" class="outline-2">
-<h2 id="orgd6030a9">Styles</h2>
-<div class="outline-text-2" id="text-orgd6030a9">
+<div id="outline-container-org026e776" class="outline-3">
+<h3 id="org026e776">Connect to Redux store</h3>
+<div class="outline-text-3" id="text-org026e776">
 <div class="org-src-container">
-<pre class="src src-css"><span style="color: #87cefa;">.App </span><span style="color: #00ff00; font-weight: bold;">{</span>
-  <span style="color: #eedd82;">text-align</span>: center;
-<span style="color: #00ff00; font-weight: bold;">}</span>
-
-<span style="color: #87cefa;">.App-header </span><span style="color: #00ff00; font-weight: bold;">{</span>
-  <span style="color: #eedd82;">background-color</span>: #222;
-  <span style="color: #eedd82;">height</span>: 150px;
-  <span style="color: #eedd82;">padding</span>: 20px;
-  <span style="color: #eedd82;">color</span>: white;
-<span style="color: #00ff00; font-weight: bold;">}</span>
-
-<span style="color: #87cefa;">.App-title </span><span style="color: #00ff00; font-weight: bold;">{</span>
-  <span style="color: #eedd82;">font-size</span>: 1.5em;
-<span style="color: #00ff00; font-weight: bold;">}</span>
-
-<span style="color: #87cefa;">.App-intro </span><span style="color: #00ff00; font-weight: bold;">{</span>
-  <span style="color: #eedd82;">font-size</span>: large;
-<span style="color: #00ff00; font-weight: bold;">}</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgd806e57" class="outline-2">
-<h2 id="orgd806e57">Tests</h2>
-<div class="outline-text-2" id="text-orgd806e57">
-<div class="org-src-container">
-<pre class="src src-js2" id="orge526b3f">it<span style="color: #00ff00; font-weight: bold;">(</span>'renders without crashing', <span style="color: #ff00ff; font-weight: bold;">()</span> =&gt; <span style="color: #ff00ff; font-weight: bold;">{</span>
-  const div = document.createElement<span style="color: #ffff00;">(</span>'div'<span style="color: #ffff00;">)</span>;
-  ReactDOM.render<span style="color: #ffff00;">(</span>&lt;App /&gt;, div<span style="color: #ffff00;">)</span>;
-  ReactDOM.unmountComponentAtNode<span style="color: #ffff00;">(</span>div<span style="color: #ffff00;">)</span>;
+<pre class="src src-js2" id="org2b34c8e">const mapStateToProps = <span style="color: #00ff00; font-weight: bold;">(</span>state<span style="color: #00ff00; font-weight: bold;">)</span> =&gt; <span style="color: #00ff00; font-weight: bold;">(</span><span style="color: #ff00ff; font-weight: bold;">{</span>
+  example: state.example,
 <span style="color: #ff00ff; font-weight: bold;">}</span><span style="color: #00ff00; font-weight: bold;">)</span>;
+
+const mapDispatchToProps = <span style="color: #00ff00; font-weight: bold;">(</span>dispatch<span style="color: #00ff00; font-weight: bold;">)</span> =&gt; <span style="color: #00ff00; font-weight: bold;">(</span><span style="color: #ff00ff; font-weight: bold;">{}</span><span style="color: #00ff00; font-weight: bold;">)</span>;
+
+export default connect<span style="color: #00ff00; font-weight: bold;">(</span>
+  mapStateToProps,
+  mapDispatchToProps
+<span style="color: #00ff00; font-weight: bold;">)(</span>HomePage<span style="color: #00ff00; font-weight: bold;">)</span>;
 </pre>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: auclair emmanuel</p>
-<p class="date">Created: 2018-03-19 Mon 12:04</p>
+<p class="date">Created: 2018-03-22 Thu 16:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

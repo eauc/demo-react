@@ -1,0 +1,49 @@
+#+TITLE: Main application shell
+#+SETUPFILE: ../../publish.setup
+
+[[../../index.org][Documentation index]]
+
+* Component
+
+  - displays the main app menu.
+  - routes the main page.
+
+  #+NAME: app component
+  #+BEGIN_SRC rjsx
+  export default () => (
+    <div>
+      <AppMenu />
+      <Switch>
+	<Route exact path="/" component={HomePage} />
+	<Route exact path="/test" component={TestPage} />
+      </Switch>
+    </div>
+  );
+  #+END_SRC
+
+* Tests
+
+  #+NAME: app component test
+  #+BEGIN_SRC js2
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(<AppShell />, div);
+    ReactDOM.unmountComponentAtNode(div);
+  });
+  #+END_SRC
+
+* Files :noexport:
+
+** Component
+
+  #+BEGIN_SRC js2 :tangle ../../../src/components/AppShell.js :noweb yes :mkdirp yes
+  import React from "react";
+  import {Route, Switch} from "react-router-dom";
+  import AppMenu from "./AppMenu";
+  import HomePage from "../pages/Home";
+  import TestPage from "../pages/Test";
+
+  <<app component>>
+
+  <<app connector>>
+  #+END_SRC

@@ -14,13 +14,17 @@
 
 * Root component
 
-  Provides store to App.
+  - provides store to App.
+  - wraps App in router.
+
   #+NAME: root component
-  #+BEGIN_SRC js2
+  #+BEGIN_SRC rjsx
   const Root = () => (
-      <Provider store={store}>
-      <App />
-      </Provider>
+    <Provider store={store}>
+      <BrowserRouter>
+	<AppShell />
+      </BrowserRouter>
+    </Provider>
   );
   #+END_SRC
 
@@ -33,7 +37,7 @@
 
 * Styles
 
-  #+BEGIN_SRC css :tangle ../../src/index.css
+  #+BEGIN_SRC css :tangle ../../src/index.css :mkdirp yes
   body {
       margin: 0;
       padding: 0;
@@ -43,7 +47,7 @@
 
 * Index files                                                      :noexport:
 
-  #+BEGIN_SRC html :tangle ../../public/index.html
+  #+BEGIN_SRC html :tangle ../../public/index.html :mkdirp yes
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -63,14 +67,15 @@
   </html>
   #+END_SRC
 
-  #+BEGIN_SRC js2 :tangle ../../src/index.js :noweb yes
+  #+BEGIN_SRC js2 :tangle ../../src/index.js :noweb yes :mkdirp yes
   import React from "react";
   import ReactDOM from "react-dom";
+  import {BrowserRouter} from "react-router-dom";
 
   import {createStore} from "redux";
   import {Provider} from "react-redux";
 
-  import App from "./App";
+  import AppShell from "./components/AppShell";
   import "./index.css";
 
   <<redux store init>>

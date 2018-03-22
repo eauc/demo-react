@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-03-19 Mon 12:04 -->
+<!-- 2018-03-22 Thu 16:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Application index</title>
+<title>Application root</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="auclair emmanuel" />
 <style type="text/css">
@@ -238,11 +238,13 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Application index</h1>
+<h1 class="title">Application root</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
+<li><a href="#orge4559fc">Redux store initialization</a></li>
+<li><a href="#org6130ab9">Root component</a></li>
 <li><a href="#org5efb8ca">Mount root component</a></li>
 <li><a href="#org7129d0c">Styles</a></li>
 </ul>
@@ -252,13 +254,44 @@ for the JavaScript code in this tag.
 <a href="../index.html">Documentation index</a>
 </p>
 
+<div id="outline-container-orge4559fc" class="outline-2">
+<h2 id="orge4559fc">Redux store initialization</h2>
+<div class="outline-text-2" id="text-orge4559fc">
+<div class="org-src-container">
+<pre class="src src-js2" id="org6c563a6">const store = createStore<span style="color: #00ff00; font-weight: bold;">(</span><span style="color: #ff00ff; font-weight: bold;">()</span> =&gt; <span style="color: #ff00ff; font-weight: bold;">(</span><span style="color: #ffff00;">{</span>
+  example: "My React Demo",
+<span style="color: #ffff00;">}</span><span style="color: #ff00ff; font-weight: bold;">)</span><span style="color: #00ff00; font-weight: bold;">)</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6130ab9" class="outline-2">
+<h2 id="org6130ab9">Root component</h2>
+<div class="outline-text-2" id="text-org6130ab9">
+<ul class="org-ul">
+<li>provides store to App.</li>
+<li>wraps App in router.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-rjsx" id="orgccec4c0">const Root = <span style="color: #00ff00; font-weight: bold;">()</span> =&gt; <span style="color: #00ff00; font-weight: bold;">(</span>
+  &lt;Provider store=<span style="color: #ff00ff; font-weight: bold;">{</span>store<span style="color: #ff00ff; font-weight: bold;">}</span>&gt;
+    &lt;BrowserRouter&gt;
+      &lt;AppShell /&gt;
+    &lt;/BrowserRouter&gt;
+  &lt;/Provider&gt;
+<span style="color: #00ff00; font-weight: bold;">)</span>;
+</pre>
+</div>
+</div>
+</div>
+
 <div id="outline-container-org5efb8ca" class="outline-2">
 <h2 id="org5efb8ca">Mount root component</h2>
 <div class="outline-text-2" id="text-org5efb8ca">
 <div class="org-src-container">
-<pre class="src src-js2" id="orgb947bd6">import App from './App';
-
-ReactDOM.render<span style="color: #00ff00; font-weight: bold;">(</span>&lt;App /&gt;, document.getElementById<span style="color: #ff00ff; font-weight: bold;">(</span>'root'<span style="color: #ff00ff; font-weight: bold;">)</span><span style="color: #00ff00; font-weight: bold;">)</span>;
+<pre class="src src-js2" id="orgb947bd6">ReactDOM.render<span style="color: #00ff00; font-weight: bold;">(</span>&lt;Root /&gt;, document.getElementById<span style="color: #ff00ff; font-weight: bold;">(</span>'root'<span style="color: #ff00ff; font-weight: bold;">)</span><span style="color: #00ff00; font-weight: bold;">)</span>;
 </pre>
 </div>
 </div>
@@ -280,7 +313,7 @@ ReactDOM.render<span style="color: #00ff00; font-weight: bold;">(</span>&lt;App 
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: auclair emmanuel</p>
-<p class="date">Created: 2018-03-19 Mon 12:04</p>
+<p class="date">Created: 2018-03-22 Thu 16:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {BrowserRouter} from "react-router-dom";
 
 import {createStore} from "redux";
 import {Provider} from "react-redux";
 
-import App from "./App";
+import AppShell from "./components/AppShell";
 import "./index.css";
 
 const store = createStore(() => ({
@@ -12,9 +13,11 @@ const store = createStore(() => ({
 }));
 
 const Root = () => (
-    <Provider store={store}>
-    <App />
-    </Provider>
+  <Provider store={store}>
+    <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
+  </Provider>
 );
 
 ReactDOM.render(<Root />, document.getElementById('root'));

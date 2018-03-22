@@ -13,6 +13,12 @@
   "react-scripts": "1.1.1"
   #+END_SRC
 
+  Router.
+  #+NAME: deps-router
+  #+BEGIN_SRC json
+  "react-router-dom": "^4.2.2"
+  #+END_SRC
+
   Bootstrap.
   #+NAME: deps-bootstrap
   #+BEGIN_SRC json
@@ -34,6 +40,7 @@
   "start": "react-scripts start",
   "build": "react-scripts build",
   "test": "react-scripts test --env=jsdom",
+  "test:debug": "react-scripts --inspect-brk test --runInBand --env=jsdom",
   "eject": "react-scripts eject"
   #+END_SRC
 
@@ -46,6 +53,7 @@
     "private": true,
     "dependencies": {
       <<deps-react>>,
+      <<deps-router>>,
       <<deps-bootstrap>>,
       <<deps-redux>>
     },
