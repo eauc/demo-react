@@ -1,12 +1,13 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {Col, Grid, Row} from "react-bootstrap";
+import TasksListContainer from "../components/Tasks";
 
 export const HomePage = ({example}) => (
   <Grid>
     <Row>
       <Col>
-	Welcome to {example} !
+	<TasksListContainer />
       </Col>
     </Row>
   </Grid>

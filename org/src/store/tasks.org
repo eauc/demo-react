@@ -1,0 +1,216 @@
+#+TITLE: Tasks store
+#+SETUPFILE: ../../publish.setup
+
+[[../../index.org][Documentation index]]
+
+* State
+
+  #+NAME: tasks default state
+  #+BEGIN_SRC json
+  "fetching": false,
+  "entries": {}
+  #+END_SRC
+
+* API
+  :PROPERTIES:
+  :header-args: :noweb-ref tasks api
+  :END:
+
+** Fake data
+
+   #+BEGIN_SRC js2
+   let FAKE_DATA =  R.pipe(
+     R.times(() => {
+       return {
+	 id: v4(),
+	 title: faker.lorem.words(),
+	 description: faker.lorem.sentences(),
+       };
+     }),
+     R.map((entry) => {
+       return [entry.id, entry];
+     }),
+     R.fromPairs
+   )(5);
+   #+END_SRC
+
+** Fetch
+
+   #+BEGIN_SRC js2
+   export function fetchTasks() {
+     return new Promise((resolve) => {
+       setTimeout(resolve, 1000);
+     }).then(() => {
+       return {
+	 entries: FAKE_DATA,
+       };
+     });
+   }
+   #+END_SRC
+
+* Actions
+  :PROPERTIES:
+  :header-args: :noweb-ref tasks actions
+  :END:
+
+** Fetch
+
+   #+BEGIN_SRC js2
+   export function fetchTasks() {
+     return (dispatch) => {
+       dispatch({type: "TASKS_FETCH_ENTRIES"});
+       return api.fetchTasks()
+	 .then(({entries}) => {
+	   dispatch({type: "TASKS_SET_ENTRIES", entries});
+	 });
+     };
+   }
+   #+END_SRC
+
+* Reducers
+  :PROPERTIES:
+  :header-args: :noweb-ref tasks reducers
+  :END:
+
+** Fetch entries
+
+  - set fetching flag.
+  #+BEGIN_SRC js2
+  case "TASKS_FETCH_ENTRIES":
+    {
+      return R.assoc("fetching", true, state);
+    }
+  #+END_SRC
+
+** Set entries
+
+  - reset fetching flag.
+  - set tasks entries state.
+  #+BEGIN_SRC js2
+  case "TASKS_SET_ENTRIES":
+    {
+      return R.pipe(
+	R.assoc("fetching", false),
+	R.assoc("entries", entries)
+      )(state);
+    }
+  #+END_SRC
+
+* Components
+  :PROPERTIES:
+  :header-args: :noweb-ref tasks components
+  :END:
+
+** Task
+
+   #+BEGIN_SRC rjsx
+   const Task = ({title}) => (
+     <tr>
+       <td>{title}</td>
+     </tr>
+   );
+   #+END_SRC
+
+** Tasks List
+
+   #+BEGIN_SRC rjsx
+   const TasksList = ({tasksList}) => (
+     <table>
+       <tbody>
+	 {R.map(([id, task]) => (
+	   <Task key={id} {...task}/>
+	 ), R.toPairs(tasksList))}
+     </tbody>
+       </table>
+   );
+   #+END_SRC
+
+** Tasks List container
+
+   #+BEGIN_SRC js2
+   function mapStateToProps(state) {
+     return {
+       tasksList: getTasksList(state),
+     };
+   }
+
+   const TasksListContainer = connect(
+     mapStateToProps,
+     actions
+   )(TasksList);
+   #+END_SRC
+
+* Selectors
+  :PROPERTIES:
+  :header-args: :noweb-ref tasks selectors
+  :END:
+
+** Tasks list
+
+  #+BEGIN_SRC js2
+  export const getTasksList = createSelector(
+    R.path(["tasks", "entries"]),
+    R.values
+  );
+  #+END_SRC
+
+* Files :noexport:
+
+** API
+
+  #+BEGIN_SRC js2 :tangle ../../../src/api/tasks.js :noweb yes :mkdirp yes
+  import * as R from "ramda";
+  import faker from "faker";
+  import {v4} from "node-uuid";
+
+  <<tasks api>>
+  #+END_SRC
+
+** Actions
+
+  #+BEGIN_SRC js2 :tangle ../../../src/actions/tasks.js :noweb yes :mkdirp yes
+  import * as api from "../api/tasks";
+
+  <<tasks actions>>
+  #+END_SRC
+
+** Reducers
+
+  #+BEGIN_SRC js2 :tangle ../../../src/reducers/tasks.js :noweb yes :mkdirp yes
+  import * as R from "ramda";
+
+  const DEFAULT_STATE = {
+      <<tasks default state>>
+  };
+
+  export default function tasks(state = DEFAULT_STATE, {type, entries}) {
+    switch(type) {
+    <<tasks reducers>>
+    default: {}
+    };
+    return state;
+  }
+  #+END_SRC
+
+** Selectors
+
+  #+BEGIN_SRC js2 :tangle ../../../src/selectors/tasks.js :noweb yes :mkdirp yes
+  import * as R from "ramda";
+  import {createSelector} from "reselect";
+
+  <<tasks selectors>>
+  #+END_SRC
+
+** Components
+
+  #+BEGIN_SRC js2 :tangle ../../../src/components/Tasks.js :noweb yes :mkdirp yes
+  import * as R from "ramda";
+  import React from "react";
+  import {connect} from "react-redux";
+  import actions from "../actions";
+  import {getTasksList} from "../selectors/tasks";
+
+  <<tasks components>>
+
+  export default TasksListContainer;
+  #+END_SRC

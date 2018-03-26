@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-03-22 Thu 16:55 -->
+<!-- 2018-03-26 Mon 18:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Application root</title>
@@ -257,10 +257,48 @@ for the JavaScript code in this tag.
 <div id="outline-container-orge4559fc" class="outline-2">
 <h2 id="orge4559fc">Redux store initialization</h2>
 <div class="outline-text-2" id="text-orge4559fc">
+<p>
+Build actions.
+</p>
 <div class="org-src-container">
-<pre class="src src-js2" id="org6c563a6">const store = createStore<span style="color: #00ff00; font-weight: bold;">(</span><span style="color: #ff00ff; font-weight: bold;">()</span> =&gt; <span style="color: #ff00ff; font-weight: bold;">(</span><span style="color: #ffff00;">{</span>
-  example: "My React Demo",
-<span style="color: #ffff00;">}</span><span style="color: #ff00ff; font-weight: bold;">)</span><span style="color: #00ff00; font-weight: bold;">)</span>;
+<pre class="src src-js2">import * as tasks from "./tasks";
+
+export default <span style="color: #00ff00; font-weight: bold;">{</span>
+  ...tasks,
+<span style="color: #00ff00; font-weight: bold;">}</span>;
+</pre>
+</div>
+
+<p>
+Build reducers.
+</p>
+<div class="org-src-container">
+<pre class="src src-js2">import tasks from "./tasks";
+
+export default <span style="color: #00ff00; font-weight: bold;">{</span>
+  tasks,
+<span style="color: #00ff00; font-weight: bold;">}</span>;
+</pre>
+</div>
+
+<p>
+Init redux dev tools extension if present.
+</p>
+<div class="org-src-container">
+<pre class="src src-js2" id="org2e46c78">const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+</pre>
+</div>
+
+<p>
+Create store.
+</p>
+<div class="org-src-container">
+<pre class="src src-js2" id="org6c563a6">const store = createStore<span style="color: #00ff00; font-weight: bold;">(</span>
+  combineReducers<span style="color: #ff00ff; font-weight: bold;">(</span>reducers<span style="color: #ff00ff; font-weight: bold;">)</span>,
+  composeEnhancers<span style="color: #ff00ff; font-weight: bold;">(</span>applyMiddleware<span style="color: #ffff00;">(</span>
+    thunk
+  <span style="color: #ffff00;">)</span><span style="color: #ff00ff; font-weight: bold;">)</span>
+<span style="color: #00ff00; font-weight: bold;">)</span>;
 </pre>
 </div>
 </div>
@@ -290,8 +328,17 @@ for the JavaScript code in this tag.
 <div id="outline-container-org5efb8ca" class="outline-2">
 <h2 id="org5efb8ca">Mount root component</h2>
 <div class="outline-text-2" id="text-org5efb8ca">
+<ul class="org-ul">
+<li>mount root component in DOM.</li>
+<li>then fetch tasks list from server.</li>
+</ul>
+
 <div class="org-src-container">
-<pre class="src src-js2" id="orgb947bd6">ReactDOM.render<span style="color: #00ff00; font-weight: bold;">(</span>&lt;Root /&gt;, document.getElementById<span style="color: #ff00ff; font-weight: bold;">(</span>'root'<span style="color: #ff00ff; font-weight: bold;">)</span><span style="color: #00ff00; font-weight: bold;">)</span>;
+<pre class="src src-js2" id="orgb947bd6">ReactDOM.render<span style="color: #00ff00; font-weight: bold;">(</span>
+    &lt;Root /&gt;,
+  document.getElementById<span style="color: #ff00ff; font-weight: bold;">(</span>'root'<span style="color: #ff00ff; font-weight: bold;">)</span>,
+  <span style="color: #ff00ff; font-weight: bold;">()</span> =&gt; <span style="color: #ff00ff; font-weight: bold;">{</span> store.dispatch<span style="color: #ffff00;">(</span>actions.fetchTasks<span style="color: #1e90ff; font-weight: bold;">()</span><span style="color: #ffff00;">)</span>; <span style="color: #ff00ff; font-weight: bold;">}</span>
+<span style="color: #00ff00; font-weight: bold;">)</span>;
 </pre>
 </div>
 </div>
@@ -313,7 +360,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: auclair emmanuel</p>
-<p class="date">Created: 2018-03-22 Thu 16:55</p>
+<p class="date">Created: 2018-03-26 Mon 18:23</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
