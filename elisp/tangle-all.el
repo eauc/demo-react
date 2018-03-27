@@ -1,7 +1,4 @@
-#+TITLE: Tangle All Org-mode Files
-
-#+BEGIN_SRC emacs-lisp :results silent
-;; Based on: http://turingmachine.org/bl/2013-05-29-recursively-listing-directories-in-elisp.html
+(require 'org)
 
 (defun directory-files-recursive (directory match maxdepth)
   "List files in DIRECTORY and in its sub-directories. 
@@ -32,15 +29,12 @@
       (setq current-directory-list (cdr current-directory-list)))
     files-list))
 
-(defun tangle-all ()
+(defun tangle-all (directory)
   "Tangle all the Org-mode files in the directory of the file of the current buffer
    recursively in child folders. Returns the list of tangled files"
-  (mapcar (lambda (f)
-	    (when (not (file-directory-p f))
-	      (org-babel-tangle-file f)))
-	  (directory-files-recursive (file-name-directory (buffer-file-name)) "\\.org$" 20)))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :results none
-(tangle-all)
-#+END_SRC
+  (progn (message directory)
+	 (mapcar (lambda (f)
+		   (progn (message f)
+			  (when (not (file-directory-p f))
+			    (org-babel-tangle-file f))))
+		 (directory-files-recursive directory "\\.org$" 20))))

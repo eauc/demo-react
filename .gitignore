@@ -19,5 +19,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-doc
+
+# project
+package.json
 org/sitemap.org
+src/
+public/index.html

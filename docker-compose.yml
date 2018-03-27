@@ -1,0 +1,16 @@
+version: '2.3'
+
+services:
+  dev:
+    build:
+      context: .
+      target: node
+    container_name: demo-react-dev
+    command: npm start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./package.json:/app/package.json
+      - ./yarn.lock:/app/yarn.lock
