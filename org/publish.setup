@@ -1,4 +1,4 @@
-#+SETUPFILE: /home/auclair/dotfiles/.emacs.d/org-html-themes/setup/theme-readtheorg.setup
+#+SETUPFILE: ~/dotfiles/.emacs.d/org-html-themes/setup/theme-readtheorg.setup
 
 #+HTML_HEAD: <style type="text/css">
 #+HTML_HEAD: pre.src { background-color: #333; color: white; }

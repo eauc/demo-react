@@ -8,7 +8,7 @@
   - displays the main app menu.
   - routes the main page.
 
-  #+NAME: app component
+  #+NAME: app-shell-component
   #+BEGIN_SRC rjsx
   export default () => (
     <div>
@@ -19,17 +19,6 @@
       </Switch>
     </div>
   );
-  #+END_SRC
-
-* Tests
-
-  #+NAME: app component test
-  #+BEGIN_SRC js2
-  it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<AppShell />, div);
-    ReactDOM.unmountComponentAtNode(div);
-  });
   #+END_SRC
 
 * Files :noexport:
@@ -43,7 +32,5 @@
   import HomePage from "../pages/Home";
   import TestPage from "../pages/Test";
 
-  <<app component>>
-
-  <<app connector>>
+  <<app-shell-component>>
   #+END_SRC

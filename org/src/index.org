@@ -24,13 +24,13 @@
   #+END_SRC
 
   Init redux dev tools extension if present.
-  #+NAME: redux devtools init
+  #+NAME: redux-devtools-init
   #+BEGIN_SRC js2
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   #+END_SRC
 
   Create store.
-  #+NAME: redux store init
+  #+NAME: redux-store-init
   #+BEGIN_SRC js2
   const store = createStore(
     combineReducers(reducers),
@@ -45,7 +45,7 @@
   - provides store to App.
   - wraps App in router.
 
-  #+NAME: root component
+  #+NAME: root-component
   #+BEGIN_SRC rjsx
   const Root = () => (
     <Provider store={store}>
@@ -61,7 +61,7 @@
   - mount root component in DOM.
   - then fetch tasks list from server.
 
-  #+NAME: index mount root component
+  #+NAME: mount-root-component
   #+BEGIN_SRC js2
   ReactDOM.render(
       <Root />,
@@ -116,10 +116,10 @@
   import actions from "./actions";
   import "./index.css";
 
-  <<redux devtools init>>
-  <<redux store init>>
+  <<redux-devtools-init>>
+  <<redux-store-init>>
 
-  <<root component>>
+  <<root-component>>
 
-  <<index mount root component>>
+  <<mount-root-component>>
   #+END_SRC

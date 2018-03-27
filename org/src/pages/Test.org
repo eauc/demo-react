@@ -5,7 +5,7 @@
 
 * Page
 
-  #+NAME: test page
+  #+NAME: test-page
   #+BEGIN_SRC rjsx
   export default () => (
     <Grid>
@@ -24,7 +24,5 @@
   import React from "react";
   import {Col, Grid, Row} from "react-bootstrap";
 
-  <<test page>>
-
-  <<test page connector>>
+  <<test-page>>
   #+END_SRC

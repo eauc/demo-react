@@ -5,7 +5,7 @@
 
 * Page
 
-  #+NAME: home page
+  #+NAME: home-page
   #+BEGIN_SRC rjsx
   export const HomePage = ({example}) => (
     <Grid>
@@ -20,7 +20,7 @@
 
 ** Connect to Redux store
 
-   #+NAME: home page connector
+   #+NAME: home-page-connector
    #+BEGIN_SRC js2
    const mapStateToProps = (state) => ({
      example: state.example,
@@ -42,7 +42,7 @@
   import {Col, Grid, Row} from "react-bootstrap";
   import TasksListContainer from "../components/Tasks";
 
-  <<home page>>
+  <<home-page>>
 
-  <<home page connector>>
+  <<home-page-connector>>
   #+END_SRC

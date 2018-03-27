@@ -5,7 +5,7 @@
 
 * Component
 
-  #+NAME: app menu component
+  #+NAME: app-menu-component
   #+BEGIN_SRC rjsx
   export default () => (
     <Navbar>
@@ -33,5 +33,5 @@
   import {Navbar, Nav, NavItem} from "react-bootstrap";
   import {LinkContainer} from "react-router-bootstrap";
 
-  <<app menu component>>
+  <<app-menu-component>>
   #+END_SRC

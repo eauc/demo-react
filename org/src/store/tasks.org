@@ -5,7 +5,7 @@
 
 * State
 
-  #+NAME: tasks default state
+  #+NAME: tasks-default-state
   #+BEGIN_SRC json
   "fetching": false,
   "entries": {}
@@ -13,7 +13,7 @@
 
 * API
   :PROPERTIES:
-  :header-args: :noweb-ref tasks api
+  :header-args: :noweb-ref tasks-api
   :END:
 
 ** Fake data
@@ -50,7 +50,7 @@
 
 * Actions
   :PROPERTIES:
-  :header-args: :noweb-ref tasks actions
+  :header-args: :noweb-ref tasks-actions
   :END:
 
 ** Fetch
@@ -69,7 +69,7 @@
 
 * Reducers
   :PROPERTIES:
-  :header-args: :noweb-ref tasks reducers
+  :header-args: :noweb-ref tasks-reducers
   :END:
 
 ** Fetch entries
@@ -98,7 +98,7 @@
 
 * Components
   :PROPERTIES:
-  :header-args: :noweb-ref tasks components
+  :header-args: :noweb-ref tasks-components
   :END:
 
 ** Task
@@ -142,7 +142,7 @@
 
 * Selectors
   :PROPERTIES:
-  :header-args: :noweb-ref tasks selectors
+  :header-args: :noweb-ref tasks-selectors
   :END:
 
 ** Tasks list
@@ -163,7 +163,7 @@
   import faker from "faker";
   import {v4} from "node-uuid";
 
-  <<tasks api>>
+  <<tasks-api>>
   #+END_SRC
 
 ** Actions
@@ -171,7 +171,7 @@
   #+BEGIN_SRC js2 :tangle ../../../src/actions/tasks.js :noweb yes :mkdirp yes
   import * as api from "../api/tasks";
 
-  <<tasks actions>>
+  <<tasks-actions>>
   #+END_SRC
 
 ** Reducers
@@ -180,12 +180,12 @@
   import * as R from "ramda";
 
   const DEFAULT_STATE = {
-      <<tasks default state>>
+      <<tasks-default-state>>
   };
 
   export default function tasks(state = DEFAULT_STATE, {type, entries}) {
     switch(type) {
-    <<tasks reducers>>
+    <<tasks-reducers>>
     default: {}
     };
     return state;
@@ -198,7 +198,7 @@
   import * as R from "ramda";
   import {createSelector} from "reselect";
 
-  <<tasks selectors>>
+  <<tasks-selectors>>
   #+END_SRC
 
 ** Components
@@ -210,7 +210,7 @@
   import actions from "../actions";
   import {getTasksList} from "../selectors/tasks";
 
-  <<tasks components>>
+  <<tasks-components>>
 
   export default TasksListContainer;
   #+END_SRC
