@@ -24,4 +24,5 @@ yarn-error.log*
 package.json
 org/sitemap.org
 src/
+docs/
 public/index.html

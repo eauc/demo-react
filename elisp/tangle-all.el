@@ -38,3 +38,5 @@
 			  (when (not (file-directory-p f))
 			    (org-babel-tangle-file f))))
 		 (directory-files-recursive directory "\\.org$" 20))))
+
+(tangle-all "org")
