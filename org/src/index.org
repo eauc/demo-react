@@ -6,7 +6,7 @@
 * Redux store initialization
 
   Build actions.
-  #+BEGIN_SRC js2 :tangle ../../src/actions/index.js :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../src/actions/index.js :mkdirp yes
   import * as tasks from "./tasks";
 
   export default {
@@ -15,7 +15,7 @@
   #+END_SRC
 
   Build reducers.
-  #+BEGIN_SRC js2 :tangle ../../src/reducers/index.js :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../src/reducers/index.js :mkdirp yes
   import tasks from "./tasks";
 
   export default {
@@ -25,13 +25,13 @@
 
   Init redux dev tools extension if present.
   #+NAME: redux-devtools-init
-  #+BEGIN_SRC js2
+  #+BEGIN_SRC js
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   #+END_SRC
 
   Create store.
   #+NAME: redux-store-init
-  #+BEGIN_SRC js2
+  #+BEGIN_SRC js
   const store = createStore(
     combineReducers(reducers),
     composeEnhancers(applyMiddleware(
@@ -46,7 +46,7 @@
   - wraps App in router.
 
   #+NAME: root-component
-  #+BEGIN_SRC rjsx
+  #+BEGIN_SRC jsx
   const Root = () => (
     <Provider store={store}>
       <BrowserRouter>
@@ -62,7 +62,7 @@
   - then fetch tasks list from server.
 
   #+NAME: mount-root-component
-  #+BEGIN_SRC js2
+  #+BEGIN_SRC js
   ReactDOM.render(
       <Root />,
     document.getElementById('root'),
@@ -102,7 +102,7 @@
   </html>
   #+END_SRC
 
-  #+BEGIN_SRC js2 :tangle ../../src/index.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../src/index.js :noweb yes :mkdirp yes
   import React from "react";
   import ReactDOM from "react-dom";
   import {BrowserRouter} from "react-router-dom";

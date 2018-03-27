@@ -1,25 +1,3 @@
-(require 'package)
-;; (message "step-a")
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("org" . "https://orgmode.org/elpa/") t)
-(package-initialize)
-;; (message "step-b")
-(package-refresh-contents)
-;; (message "step-c")
-
-(unless (package-installed-p 'htmlize)
-  (package-install 'htmlize))
-;; (message "step1")
-
-(add-to-list 'load-path "/home/emacs/org-9.1.9/lisp")
-(add-to-list 'load-path "/home/emacs/org-9.1.9/contrib/lisp")
-
-(require 'org)
-(require 'htmlize)
-;; (message "step3")
-
 (message (format "Org version: %s" (org-version)))
 
 (defun org-publish-org-sitemap (title list)
@@ -57,7 +35,7 @@
 
 (setq org-export-html-style-include-scripts nil
       org-export-html-style-include-default nil)
-;; (message "step4")
-(org-publish-all)
 
-;; (message "step5")
+(setq org-html-htmlize-output-type 'css)
+
+(org-publish-all)

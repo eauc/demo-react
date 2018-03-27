@@ -6,7 +6,7 @@
 * Page
 
   #+NAME: test-page
-  #+BEGIN_SRC rjsx
+  #+BEGIN_SRC jsx
   export default () => (
     <Grid>
       <Row>
@@ -20,7 +20,7 @@
 
 * Files :noexport:
 
-  #+BEGIN_SRC js2 :tangle ../../../src/pages/Test.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/pages/Test.js :noweb yes :mkdirp yes
   import React from "react";
   import {Col, Grid, Row} from "react-bootstrap";
 

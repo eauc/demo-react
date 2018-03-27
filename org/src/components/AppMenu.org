@@ -6,7 +6,7 @@
 * Component
 
   #+NAME: app-menu-component
-  #+BEGIN_SRC rjsx
+  #+BEGIN_SRC jsx
   export default () => (
     <Navbar>
       <Navbar.Header>
@@ -28,7 +28,7 @@
 
 * Files :noexport:
 
-  #+BEGIN_SRC js2 :tangle ../../../src/components/AppMenu.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/components/AppMenu.js :noweb yes :mkdirp yes
   import React from "react";
   import {Navbar, Nav, NavItem} from "react-bootstrap";
   import {LinkContainer} from "react-router-bootstrap";

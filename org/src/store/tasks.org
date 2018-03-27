@@ -18,7 +18,7 @@
 
 ** Fake data
 
-   #+BEGIN_SRC js2
+   #+BEGIN_SRC js
    let FAKE_DATA =  R.pipe(
      R.times(() => {
        return {
@@ -36,7 +36,7 @@
 
 ** Fetch
 
-   #+BEGIN_SRC js2
+   #+BEGIN_SRC js
    export function fetchTasks() {
      return new Promise((resolve) => {
        setTimeout(resolve, 1000);
@@ -55,7 +55,7 @@
 
 ** Fetch
 
-   #+BEGIN_SRC js2
+   #+BEGIN_SRC js
    export function fetchTasks() {
      return (dispatch) => {
        dispatch({type: "TASKS_FETCH_ENTRIES"});
@@ -75,7 +75,7 @@
 ** Fetch entries
 
   - set fetching flag.
-  #+BEGIN_SRC js2
+  #+BEGIN_SRC js
   case "TASKS_FETCH_ENTRIES":
     {
       return R.assoc("fetching", true, state);
@@ -86,7 +86,7 @@
 
   - reset fetching flag.
   - set tasks entries state.
-  #+BEGIN_SRC js2
+  #+BEGIN_SRC js
   case "TASKS_SET_ENTRIES":
     {
       return R.pipe(
@@ -103,7 +103,7 @@
 
 ** Task
 
-   #+BEGIN_SRC rjsx
+   #+BEGIN_SRC jsx
    const Task = ({title}) => (
      <tr>
        <td>{title}</td>
@@ -113,7 +113,7 @@
 
 ** Tasks List
 
-   #+BEGIN_SRC rjsx
+   #+BEGIN_SRC jsx
    const TasksList = ({tasksList}) => (
      <table>
        <tbody>
@@ -127,7 +127,7 @@
 
 ** Tasks List container
 
-   #+BEGIN_SRC js2
+   #+BEGIN_SRC js
    function mapStateToProps(state) {
      return {
        tasksList: getTasksList(state),
@@ -147,7 +147,7 @@
 
 ** Tasks list
 
-  #+BEGIN_SRC js2
+  #+BEGIN_SRC js
   export const getTasksList = createSelector(
     R.path(["tasks", "entries"]),
     R.values
@@ -158,7 +158,7 @@
 
 ** API
 
-  #+BEGIN_SRC js2 :tangle ../../../src/api/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/api/tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
   import faker from "faker";
   import {v4} from "node-uuid";
@@ -168,7 +168,7 @@
 
 ** Actions
 
-  #+BEGIN_SRC js2 :tangle ../../../src/actions/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/actions/tasks.js :noweb yes :mkdirp yes
   import * as api from "../api/tasks";
 
   <<tasks-actions>>
@@ -176,7 +176,7 @@
 
 ** Reducers
 
-  #+BEGIN_SRC js2 :tangle ../../../src/reducers/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/reducers/tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
 
   const DEFAULT_STATE = {
@@ -194,7 +194,7 @@
 
 ** Selectors
 
-  #+BEGIN_SRC js2 :tangle ../../../src/selectors/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/selectors/tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
   import {createSelector} from "reselect";
 
@@ -203,7 +203,7 @@
 
 ** Components
 
-  #+BEGIN_SRC js2 :tangle ../../../src/components/Tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/components/Tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
   import React from "react";
   import {connect} from "react-redux";

@@ -1,4 +1,4 @@
-(require 'org)
+(message (format "Org version: %s" (org-version)))
 
 (defun directory-files-recursive (directory match maxdepth)
   "List files in DIRECTORY and in its sub-directories. 

@@ -6,7 +6,7 @@
 * Page
 
   #+NAME: home-page
-  #+BEGIN_SRC rjsx
+  #+BEGIN_SRC jsx
   export const HomePage = ({example}) => (
     <Grid>
       <Row>
@@ -21,7 +21,7 @@
 ** Connect to Redux store
 
    #+NAME: home-page-connector
-   #+BEGIN_SRC js2
+   #+BEGIN_SRC js
    const mapStateToProps = (state) => ({
      example: state.example,
    });
@@ -36,7 +36,7 @@
 
 * Files :noexport:
 
-  #+BEGIN_SRC js2 :tangle ../../../src/pages/Home.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../../../src/pages/Home.js :noweb yes :mkdirp yes
   import React from "react";
   import {connect} from 'react-redux';
   import {Col, Grid, Row} from "react-bootstrap";
