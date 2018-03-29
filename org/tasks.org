@@ -3,11 +3,29 @@
 
 [[./index.org][Documentation index]]
 
-* State
+* Model
 
-  #+NAME: tasks-default-state
+  A task is a JSON object with an ID, a title and a description.
+  #+BEGIN_SRC json :tangle no
+  {
+    "id": "string",
+    "title": "string",
+    "description": "string"
+  }
+  #+END_SRC
+
+* State
+  :PROPERTIES:
+  :header-args: :noweb-ref tasks-default-state :noweb-sep ",\n"
+  :END:
+
+  We need a flag to know if a fetch request is ongoing.
   #+BEGIN_SRC json
-  "fetching": false,
+  "fetching": false
+  #+END_SRC
+
+  We will store the tasks entries retrieved from server in an object, mapping =id=s to tasks.
+  #+BEGIN_SRC json
   "entries": {}
   #+END_SRC
 
@@ -18,13 +36,16 @@
 
 ** Fake data
 
+   We need fake data to replace the state of tasks in server.
+   We just generate 5 random tasks at startup.
+
    #+BEGIN_SRC js
    let FAKE_DATA =  R.pipe(
      R.times(() => {
        return {
-	 id: v4(),
-	 title: faker.lorem.words(),
-	 description: faker.lorem.sentences(),
+         id: v4(),
+         title: faker.lorem.words(),
+         description: faker.lorem.sentences(),
        };
      }),
      R.map((entry) => {
@@ -36,13 +57,15 @@
 
 ** Fetch
 
+   We simulate a request to the server with a 1s resolution delay.
+
    #+BEGIN_SRC js
    export function fetchTasks() {
      return new Promise((resolve) => {
        setTimeout(resolve, 1000);
      }).then(() => {
        return {
-	 entries: FAKE_DATA,
+         entries: FAKE_DATA,
        };
      });
    }
@@ -55,14 +78,17 @@
 
 ** Fetch
 
+   We set and clear the fetching flag before and after the request.
+   TODO: handle request error.
+
    #+BEGIN_SRC js
    export function fetchTasks() {
      return (dispatch) => {
        dispatch({type: "TASKS_FETCH_ENTRIES"});
        return api.fetchTasks()
-	 .then(({entries}) => {
-	   dispatch({type: "TASKS_SET_ENTRIES", entries});
-	 });
+         .then(({entries}) => {
+           dispatch({type: "TASKS_SET_ENTRIES", entries});
+         });
      };
    }
    #+END_SRC
@@ -74,27 +100,29 @@
 
 ** Fetch entries
 
-  - set fetching flag.
-  #+BEGIN_SRC js
-  case "TASKS_FETCH_ENTRIES":
-    {
-      return R.assoc("fetching", true, state);
-    }
-  #+END_SRC
+   - set fetching flag.
+
+   #+BEGIN_SRC js
+   case "TASKS_FETCH_ENTRIES":
+   {
+     return R.assoc("fetching", true, state);
+   }
+   #+END_SRC
 
 ** Set entries
 
-  - reset fetching flag.
-  - set tasks entries state.
-  #+BEGIN_SRC js
-  case "TASKS_SET_ENTRIES":
-    {
-      return R.pipe(
-	R.assoc("fetching", false),
-	R.assoc("entries", entries)
-      )(state);
-    }
-  #+END_SRC
+   - reset fetching flag.
+   - set tasks entries state.
+
+   #+BEGIN_SRC js
+   case "TASKS_SET_ENTRIES":
+   {
+     return R.pipe(
+       R.assoc("fetching", false),
+       R.assoc("entries", entries)
+     )(state);
+   }
+   #+END_SRC
 
 * Components
   :PROPERTIES:
@@ -102,6 +130,8 @@
   :END:
 
 ** Task
+
+   We just render the task title in the list.
 
    #+BEGIN_SRC jsx
    const Task = ({title}) => (
@@ -113,19 +143,23 @@
 
 ** Tasks List
 
+   The tasks list is just a table.
+
    #+BEGIN_SRC jsx
    const TasksList = ({tasksList}) => (
      <Table bordered hover>
        <tbody>
-	 {R.map(([id, task]) => (
-	   <Task key={id} {...task}/>
-	 ), R.toPairs(tasksList))}
+         {R.map(([id, task]) => (
+           <Task key={id} {...task}/>
+         ), R.toPairs(tasksList))}
      </tbody>
        </Table>
    );
    #+END_SRC
 
 ** Tasks List container
+
+   For now we only need the current tasks list.
 
    #+BEGIN_SRC js
    function mapStateToProps(state) {
@@ -147,71 +181,73 @@
 
 ** Tasks list
 
-  #+BEGIN_SRC js
-  export const getTasksList = createSelector(
-    R.path(["tasks", "entries"]),
-    R.values
-  );
-  #+END_SRC
+   Get the current tasks entries and convert to an array of tasks object.
+
+   #+BEGIN_SRC js
+   export const getTasksList = createSelector(
+     R.path(["tasks", "entries"]),
+     R.values
+   );
+   #+END_SRC
 
 * Files :noexport:
 
 ** API
 
-  #+BEGIN_SRC js :tangle ../src/api/tasks.js :noweb yes :mkdirp yes
-  import * as R from "ramda";
-  import faker from "faker";
-  import {v4} from "node-uuid";
+   #+BEGIN_SRC js :tangle ../src/api/tasks.js :noweb yes :mkdirp yes
+   import * as R from "ramda";
+   import faker from "faker";
+   import {v4} from "node-uuid";
 
-  <<tasks-api>>
-  #+END_SRC
+     <<tasks-api>>
+   #+END_SRC
 
 ** Actions
 
-  #+BEGIN_SRC js :tangle ../src/actions/tasks.js :noweb yes :mkdirp yes
-  import * as api from "../api/tasks";
+   #+BEGIN_SRC js :tangle ../src/actions/tasks.js :noweb yes :mkdirp yes
+   import * as api from "../api/tasks";
 
-  <<tasks-actions>>
-  #+END_SRC
+     <<tasks-actions>>
+   #+END_SRC
 
 ** Reducers
 
-  #+BEGIN_SRC js :tangle ../src/reducers/tasks.js :noweb yes :mkdirp yes
-  import * as R from "ramda";
+   #+BEGIN_SRC js :tangle ../src/reducers/tasks.js :noweb yes :mkdirp yes
+   import * as R from "ramda";
 
-  const DEFAULT_STATE = {
-      <<tasks-default-state>>
-  };
+   const DEFAULT_STATE = {
+       <<tasks-default-state>>
+   };
 
-  export default function tasks(state = DEFAULT_STATE, {type, entries}) {
-    switch(type) {
-    <<tasks-reducers>>
-    default: {}
-    };
-    return state;
-  }
-  #+END_SRC
+   export default function tasks(state = DEFAULT_STATE, {type, entries}) {
+     switch(type) {
+         <<tasks-reducers>>
+     default: {}
+     };
+     return state;
+   }
+   #+END_SRC
 
 ** Selectors
 
-  #+BEGIN_SRC js :tangle ../src/selectors/tasks.js :noweb yes :mkdirp yes
-  import * as R from "ramda";
-  import {createSelector} from "reselect";
+   #+BEGIN_SRC js :tangle ../src/selectors/tasks.js :noweb yes :mkdirp yes
+   import * as R from "ramda";
+   import {createSelector} from "reselect";
 
-  <<tasks-selectors>>
-  #+END_SRC
+     <<tasks-selectors>>
+   #+END_SRC
 
 ** Components
 
-  #+BEGIN_SRC js :tangle ../src/components/Tasks.js :noweb yes :mkdirp yes
-  import * as R from "ramda";
-  import React from "react";
-  import {connect} from "react-redux";
-  import {Table} from "react-bootstrap";
-  import actions from "../actions";
-  import {getTasksList} from "../selectors/tasks";
+   #+BEGIN_SRC js :tangle ../src/components/Tasks.js :noweb yes :mkdirp yes
+   import * as R from "ramda";
+   import React from "react";
+   import {connect} from "react-redux";
+   import {Table} from "react-bootstrap";
+   import actions from "../actions";
+   import {getTasksList} from "../selectors/tasks";
 
-  <<tasks-components>>
+     <<tasks-components>>
 
-  export default TasksListContainer;
-  #+END_SRC
+   export default TasksListContainer;
+   #+END_SRC
