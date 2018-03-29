@@ -12,12 +12,12 @@ RUN HOME=/home/emacs emacs --batch \
 
 FROM node:8 as node
 WORKDIR /app
-COPY --from=emacs /app/src ./src
-COPY --from=emacs /app/public ./public
 COPY --from=emacs /app/package.json .
 COPY yarn.lock .
 RUN npm install -g yarn
 RUN yarn install
+COPY --from=emacs /app/src ./src
+COPY --from=emacs /app/public ./public
 RUN npm run build
 
 FROM nginx as server

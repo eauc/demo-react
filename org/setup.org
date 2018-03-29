@@ -57,23 +57,22 @@
    FROM node:8 as node
    #+END_SRC
 
-   Copy files produced by emacs-org image.
-   #+BEGIN_SRC dockerfile
-   WORKDIR /app
-   COPY --from=emacs /app/src ./src
-   COPY --from=emacs /app/public ./public
-   COPY --from=emacs /app/package.json .
-   #+END_SRC
-
    Install node packages.
    #+BEGIN_SRC dockerfile
+   WORKDIR /app
+   COPY --from=emacs /app/package.json .
    COPY yarn.lock .
    RUN npm install -g yarn
    RUN yarn install
    #+END_SRC
 
-   Build react application for production.
+   Copy files produced by emacs-org image.
+   #+BEGIN_SRC dockerfile
+   COPY --from=emacs /app/src ./src
+   COPY --from=emacs /app/public ./public
+   #+END_SRC
 
+   Build react application for production.
    Produces files in =build/=.
    #+BEGIN_SRC dockerfile
    RUN npm run build
