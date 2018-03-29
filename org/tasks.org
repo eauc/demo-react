@@ -1,7 +1,7 @@
 #+TITLE: Tasks store
 #+SETUPFILE: ./publish.setup
 
-[[../../index.org][Documentation index]]
+[[./index.org][Documentation index]]
 
 * State
 
