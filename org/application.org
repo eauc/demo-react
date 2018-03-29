@@ -1,12 +1,14 @@
-#+TITLE: Application root
-#+SETUPFILE: ../publish.setup
+#+TITLE: Application
+#+SETUPFILE: ./publish.setup
 
-[[../index.org][Documentation index]]
+[[./index.org][Documentation index]]
 
-* Redux store initialization
+* Initialization
+
+** Redux store 
 
   Build actions.
-  #+BEGIN_SRC js :tangle ../../src/actions/index.js :mkdirp yes
+  #+BEGIN_SRC js :tangle ../src/actions/index.js :mkdirp yes
   import * as tasks from "./tasks";
 
   export default {
@@ -15,7 +17,7 @@
   #+END_SRC
 
   Build reducers.
-  #+BEGIN_SRC js :tangle ../../src/reducers/index.js :mkdirp yes
+  #+BEGIN_SRC js :tangle ../src/reducers/index.js :mkdirp yes
   import tasks from "./tasks";
 
   export default {
@@ -40,7 +42,23 @@
   );
   #+END_SRC
 
-* Root component
+** Mount root component
+
+  - mount root component in DOM.
+  - then fetch tasks list from server.
+
+  #+NAME: mount-root-component
+  #+BEGIN_SRC js
+  ReactDOM.render(
+      <Root />,
+    document.getElementById('root'),
+    () => { store.dispatch(actions.fetchTasks()); }
+  );
+  #+END_SRC
+
+* Components
+
+** Root
 
   - provides store to App.
   - wraps App in router.
@@ -56,23 +74,50 @@
   );
   #+END_SRC
 
-* Mount root component
+** AppShell
 
-  - mount root component in DOM.
-  - then fetch tasks list from server.
+  - displays the main app menu.
+  - routes the main page.
 
-  #+NAME: mount-root-component
-  #+BEGIN_SRC js
-  ReactDOM.render(
-      <Root />,
-    document.getElementById('root'),
-    () => { store.dispatch(actions.fetchTasks()); }
+  #+NAME: app-shell-component
+  #+BEGIN_SRC jsx
+  export const AppShell = () => (
+    <div>
+      <AppMenu />
+      <Switch>
+	<Route exact path="/" component={HomePage} />
+	<Route exact path="/test" component={TestPage} />
+      </Switch>
+    </div>
+  );
+  #+END_SRC
+
+** AppMenu
+
+  #+NAME: app-menu-component
+  #+BEGIN_SRC jsx
+  export const AppMenu = () => (
+    <Navbar>
+      <Navbar.Header>
+	<Navbar.Brand>
+	  React Demo
+	</Navbar.Brand>
+      </Navbar.Header>
+      <Nav>
+	<LinkContainer to="/">
+	  <NavItem>Home</NavItem>
+	</LinkContainer>
+	<LinkContainer to="/test">
+	  <NavItem>Test</NavItem>
+	</LinkContainer>
+      </Nav>
+    </Navbar>
   );
   #+END_SRC
 
 * Styles
 
-  #+BEGIN_SRC css :tangle ../../src/index.css :mkdirp yes
+  #+BEGIN_SRC css :tangle ../src/index.css :mkdirp yes
   body {
       margin: 0;
       padding: 0;
@@ -80,9 +125,11 @@
   }
   #+END_SRC
 
-* Index files                                                      :noexport:
+* Files :noexport:
 
-  #+BEGIN_SRC html :tangle ../../public/index.html :mkdirp yes
+** HTML index
+
+  #+BEGIN_SRC html :tangle ../public/index.html :mkdirp yes
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -102,7 +149,9 @@
   </html>
   #+END_SRC
 
-  #+BEGIN_SRC js :tangle ../../src/index.js :noweb yes :mkdirp yes
+** JS index
+
+  #+BEGIN_SRC js :tangle ../src/index.js :noweb yes :mkdirp yes
   import React from "react";
   import ReactDOM from "react-dom";
   import {BrowserRouter} from "react-router-dom";
@@ -111,7 +160,7 @@
   import thunk from "redux-thunk";
   import {Provider} from "react-redux";
 
-  import AppShell from "./components/AppShell";
+  import {AppShell} from "./components/AppShell";
   import reducers from "./reducers";
   import actions from "./actions";
   import "./index.css";
@@ -122,4 +171,23 @@
   <<root-component>>
 
   <<mount-root-component>>
+  #+END_SRC
+
+** Components
+
+  #+BEGIN_SRC js :tangle ../src/components/AppShell.js :noweb yes :mkdirp yes
+  import React from "react";
+  import {Route, Switch} from "react-router-dom";
+  import {AppMenu} from "./AppMenu";
+  import {HomePage, TestPage} from "../pages";
+
+  <<app-shell-component>>
+  #+END_SRC
+
+  #+BEGIN_SRC js :tangle ../src/components/AppMenu.js :noweb yes :mkdirp yes
+  import React from "react";
+  import {Navbar, Nav, NavItem} from "react-bootstrap";
+  import {LinkContainer} from "react-router-bootstrap";
+
+  <<app-menu-component>>
   #+END_SRC

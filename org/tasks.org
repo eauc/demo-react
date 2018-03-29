@@ -1,5 +1,5 @@
 #+TITLE: Tasks store
-#+SETUPFILE: ../../publish.setup
+#+SETUPFILE: ./publish.setup
 
 [[../../index.org][Documentation index]]
 
@@ -115,13 +115,13 @@
 
    #+BEGIN_SRC jsx
    const TasksList = ({tasksList}) => (
-     <table>
+     <Table bordered hover>
        <tbody>
 	 {R.map(([id, task]) => (
 	   <Task key={id} {...task}/>
 	 ), R.toPairs(tasksList))}
      </tbody>
-       </table>
+       </Table>
    );
    #+END_SRC
 
@@ -158,7 +158,7 @@
 
 ** API
 
-  #+BEGIN_SRC js :tangle ../../../src/api/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../src/api/tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
   import faker from "faker";
   import {v4} from "node-uuid";
@@ -168,7 +168,7 @@
 
 ** Actions
 
-  #+BEGIN_SRC js :tangle ../../../src/actions/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../src/actions/tasks.js :noweb yes :mkdirp yes
   import * as api from "../api/tasks";
 
   <<tasks-actions>>
@@ -176,7 +176,7 @@
 
 ** Reducers
 
-  #+BEGIN_SRC js :tangle ../../../src/reducers/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../src/reducers/tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
 
   const DEFAULT_STATE = {
@@ -194,7 +194,7 @@
 
 ** Selectors
 
-  #+BEGIN_SRC js :tangle ../../../src/selectors/tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../src/selectors/tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
   import {createSelector} from "reselect";
 
@@ -203,10 +203,11 @@
 
 ** Components
 
-  #+BEGIN_SRC js :tangle ../../../src/components/Tasks.js :noweb yes :mkdirp yes
+  #+BEGIN_SRC js :tangle ../src/components/Tasks.js :noweb yes :mkdirp yes
   import * as R from "ramda";
   import React from "react";
   import {connect} from "react-redux";
+  import {Table} from "react-bootstrap";
   import actions from "../actions";
   import {getTasksList} from "../selectors/tasks";
 

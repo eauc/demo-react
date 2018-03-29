@@ -1,0 +1,46 @@
+#+TITLE: Pages
+#+SETUPFILE: ./publish.setup
+
+[[./index.org][Documentation index]]
+
+* Home
+
+  #+NAME: home-page
+  #+BEGIN_SRC jsx
+  export const HomePage = ({example}) => (
+    <Grid>
+      <Row>
+	<Col>
+	  <TasksListContainer />
+	</Col>
+      </Row>
+    </Grid>
+  );
+  #+END_SRC
+
+* Test
+
+  #+NAME: test-page
+  #+BEGIN_SRC jsx
+  export const TestPage = () => (
+    <Grid>
+      <Row>
+	<Col>
+	  Another test page !
+	</Col>
+      </Row>
+    </Grid>
+  );
+  #+END_SRC
+
+* Files :noexport:
+
+  #+BEGIN_SRC js :tangle ../src/pages.js :noweb yes :mkdirp yes
+  import React from "react";
+  import {Col, Grid, Row} from "react-bootstrap";
+  import TasksListContainer from "./components/Tasks";
+
+  <<home-page>>
+
+  <<test-page>>
+  #+END_SRC
