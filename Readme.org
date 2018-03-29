@@ -1,0 +1,15 @@
+#+TITLE: Demo React+Redux application
+
+All code is produced from Org files in [[./org]].
+
+* Getting started
+
+  To build production image:
+  #+BEGIN_SRC sh
+  docker build -t demo-react .
+  #+END_SRC
+
+  To start dev server:
+  #+BEGIN_SRC sh
+  docker-compose up dev
+  #+END_SRC
