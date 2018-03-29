@@ -14,32 +14,7 @@
 
     Emacs base image.
     #+BEGIN_SRC dockerfile
-    FROM jare/emacs:latest as emacs
-    #+END_SRC
-
-    Get latest org-mode package.
-    #+BEGIN_SRC dockerfile
-    RUN apt-get update && apt-get install -y wget
-    RUN mkdir -p /home/emacs && \
-    cd /home/emacs && \
-    wget https://orgmode.org/org-9.1.9.tar.gz && \
-    tar xvzf org-9.1.9.tar.gz
-    #+END_SRC
-
-    Get my emacs config, including org-html-themes.
-    #+BEGIN_SRC dockerfile
-    RUN git clone --recurse --branch test https://github.com/eauc/dotfiles /home/emacs/dotfiles
-    #+END_SRC
-
-    Include elisp files defining functions to build project.
-    #+BEGIN_SRC dockerfile
-    COPY ./elisp /home/emacs/elisp
-    #+END_SRC
-
-    Install packages.
-    #+BEGIN_SRC dockerfile
-    RUN HOME=/home/emacs emacs --batch -f toggle-debug-on-error \
-    -l "/home/emacs/elisp/install.el"
+    FROM eauc/emacs-org as emacs
     #+END_SRC
 
 *** Tangle source
@@ -54,9 +29,10 @@
 
     Produces files in =src/= and =public/=.
     #+BEGIN_SRC dockerfile
-    RUN HOME=/home/emacs emacs --batch -f toggle-debug-on-error \
-    -l "/home/emacs/elisp/init.el" \
-    -l "/home/emacs/elisp/tangle-all.el"
+    RUN HOME=/home/emacs emacs --batch \
+	-l "/home/emacs/elisp/init.el" \
+	-l "/home/emacs/elisp/tangle-all.el" \
+	--eval "(tangle-all \"org\")"
     #+END_SRC
 
 *** Publish documentation
@@ -65,9 +41,10 @@
 
     Produces files in =doc/=.
     #+BEGIN_SRC dockerfile
-    RUN HOME=/home/emacs emacs --batch -f toggle-debug-on-error \
-    -l "/home/emacs/elisp/init.el" \
-    -l "/home/emacs/elisp/publish-html.el"
+    RUN HOME=/home/emacs emacs --batch \
+	-l "/home/emacs/elisp/init.el" \
+	-l "/home/emacs/elisp/publish-all.el" \
+	--eval "(publish-all \"Demo React\" \"org\" \"docs\")"
     #+END_SRC
 
 ** Compile react app
