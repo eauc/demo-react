@@ -27,3 +27,4 @@ src/
 docs/
 public/
 org/index.org
+nginx.conf.template
