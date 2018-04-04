@@ -5,16 +5,17 @@
 
 * Model
 
-  A task is a JSON object with an ID, a title and a description.
+  A task is a JSON object with an ID, a title, a description and a done flag.
   #+BEGIN_SRC json :tangle no
   {
     "id": "string",
     "title": "string",
-    "description": "string"
+    "description": "string",
+    "done": false
   }
   #+END_SRC
 
-* State
+* Store
   :PROPERTIES:
   :header-args: :noweb-ref tasks-default-state :noweb-sep ",\n"
   :END:
@@ -24,7 +25,7 @@
   "fetching": false
   #+END_SRC
 
-  We will store the tasks entries retrieved from server in an object, mapping =id=s to tasks.
+  We will store the tasks entries retrieved from server in an object, mapping =id= to tasks.
   #+BEGIN_SRC json
   "entries": {}
   #+END_SRC
@@ -43,9 +44,10 @@
    let FAKE_DATA =  R.pipe(
      R.times(() => {
        return {
-         id: v4(),
-         title: faker.lorem.words(),
-         description: faker.lorem.sentences(),
+	 id: v4(),
+	 title: faker.lorem.words(),
+	 description: faker.lorem.sentences(),
+	 done: faker.random.boolean(),
        };
      }),
      R.map((entry) => {
@@ -71,6 +73,37 @@
    }
    #+END_SRC
 
+** Toggle task done
+
+   - checks if task exists, otherwise reject request.
+   - toggles done flag on data.
+   - returns updated task.
+
+   #+BEGIN_SRC js
+   export function toggleTaskDone({id}) {
+     return new Promise((resolve) => {
+       setTimeout(resolve, 1000);
+     }).then(() => {
+       const task = R.prop(id, FAKE_DATA);
+       if (R.isNil(task)) {
+	 return Promise.reject({
+	   message: "unknown task id",
+	   id,
+	 });
+       }
+       const updatedTask = R.over(
+	 R.lensProp("done"),
+	 R.not,
+	 task
+       );
+       FAKE_DATA = R.assoc(id, updatedTask, FAKE_DATA);
+       return {
+	 entry: updatedTask,
+       };
+     });
+   }
+   #+END_SRC
+
 * Actions
   :PROPERTIES:
   :header-args: :noweb-ref tasks-actions
@@ -89,6 +122,25 @@
          .then(({entries}) => {
            dispatch({type: "TASKS_SET_ENTRIES", entries});
          });
+     };
+   }
+   #+END_SRC
+
+** toggle Task done
+
+   - eagerly updates local task state.
+   - toggles task done flag in server.
+   - updates task entry in local state on success.
+   TODO: refresh all entries on error.
+
+   #+BEGIN_SRC js
+   export function toggleTaskDone({id}) {
+     return (dispatch) => {
+       dispatch({type: "TASKS_TOGGLE_DONE", id});
+       return api.toggleTaskDone({id})
+	 .then(({entry}) => {
+	   dispatch({type: "TASKS_UPDATE_ENTRY", id, entry});
+	 });
      };
    }
    #+END_SRC
@@ -124,6 +176,36 @@
    }
    #+END_SRC
 
+** Update one entry
+
+   - reset fetching flag.
+   - update task entry.
+
+   #+BEGIN_SRC js
+   case "TASKS_UPDATE_ENTRY":
+   {
+     return R.pipe(
+       R.assoc("fetching", false),
+       R.assocPath(["entries", id], entry)
+     )(state);
+   }
+   #+END_SRC
+
+** Toggle task done
+
+   - set fetching flag.
+   - eagerly update task entry.
+     
+   #+BEGIN_SRC js
+   case "TASKS_TOGGLE_DONE":
+   {
+     return R.pipe(
+       R.assoc("fetching", true),
+       R.over(R.lensPath(["entries", id, "done"]), R.not)
+     )(state);
+   }
+   #+END_SRC
+
 * Components
   :PROPERTIES:
   :header-args: :noweb-ref tasks-components
@@ -132,11 +214,21 @@
 ** Task
 
    We just render the task title in the list.
+   An empty box or a check is displayed in front of the title depending on the =done= state.
+   The user can click on the check/box to toggle the =done= state.
 
    #+BEGIN_SRC jsx
-   const Task = ({title}) => (
-     <tr>
-       <td>{title}</td>
+   const Task = ({id, title, done, toggleTaskDone}) => (
+     <tr className="tasks-item">
+       <td className="tasks-done"
+	   onClick={() => toggleTaskDone({id})}>
+	 {done ? "✔" : "□"}
+       </td>
+       <td className={classNames({
+	     done,
+	   })}>
+	 {title}
+       </td>
      </tr>
    );
    #+END_SRC
@@ -146,15 +238,19 @@
    The tasks list is just a table.
 
    #+BEGIN_SRC jsx
-   const TasksList = ({tasksList}) => (
-     <Table bordered hover>
-       <tbody>
-         {R.map(([id, task]) => (
-           <Task key={id} {...task}/>
-         ), R.toPairs(tasksList))}
-     </tbody>
+   const TasksList = ({tasksList, toggleTaskDone}) => {
+     const tasks = R.map(([id, task]) => (
+       <Task key={id} toggleTaskDone={toggleTaskDone} {...task}/>
+     ), R.toPairs(tasksList));
+
+     return (
+       <Table className="tasks-list" hover>
+	 <tbody>
+	   {tasks}
+	 </tbody>
        </Table>
-   );
+     );
+   };
    #+END_SRC
 
 ** Tasks List container
@@ -173,6 +269,49 @@
      actions
    )(TasksList);
    #+END_SRC
+
+** Styles
+  :PROPERTIES:
+  :header-args: :noweb-ref tasks-styles
+  :END:
+
+  Remove the rows top border from Bootstrap.
+  We need to have the same selector weight as Bootstrap's.
+
+  #+BEGIN_SRC css
+  .tasks-list {
+      tbody {
+	  tr {
+	      td {
+		  border-top: 0;
+	      }
+	  }
+      }
+  }
+  #+END_SRC
+
+  Display a clicking cursor on rows to show the user can toggle =done= state or edit task.
+  When task is done, strike the title.
+
+  #+BEGIN_SRC css
+  .tasks-item {
+      cursor: pointer;
+
+      & .done {
+	  text-decoration: line-through;
+      }
+  }
+  #+END_SRC
+
+  Disable text selection when user clicks rapidly on =done= check.
+  Use smallest possible column width.
+
+  #+BEGIN_SRC css
+  .tasks-done {
+      user-select: none;
+      width: 1%;
+  }
+  #+END_SRC
 
 * Selectors
   :PROPERTIES:
@@ -219,7 +358,7 @@
        <<tasks-default-state>>
    };
 
-   export default function tasks(state = DEFAULT_STATE, {type, entries}) {
+   export default function tasks(state = DEFAULT_STATE, {type, id, entry, entries}) {
      switch(type) {
          <<tasks-reducers>>
      default: {}
@@ -244,10 +383,16 @@
    import React from "react";
    import {connect} from "react-redux";
    import {Table} from "react-bootstrap";
+   import classNames from "classnames";
    import actions from "../actions";
    import {getTasksList} from "../selectors/tasks";
+   import "./Tasks.css";
 
      <<tasks-components>>
 
    export default TasksListContainer;
+   #+END_SRC
+
+   #+BEGIN_SRC js :tangle ../src/components/Tasks.scss :noweb yes :mkdirp yes
+     <<tasks-styles>>
    #+END_SRC
