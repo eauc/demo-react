@@ -27,6 +27,7 @@
       <Row>
 	<Col>
 	  Another test page !
+	  <TaskEdit />
 	</Col>
       </Row>
     </Grid>
@@ -38,7 +39,7 @@
   #+BEGIN_SRC js :tangle ../src/pages.js :noweb yes :mkdirp yes
   import React from "react";
   import {Col, Grid, Row} from "react-bootstrap";
-  import TasksListContainer from "./components/Tasks";
+  import TasksListContainer, {TaskEdit} from "./components/Tasks";
 
   <<home-page>>
 
