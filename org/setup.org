@@ -14,10 +14,10 @@
 
     Emacs base image.
     #+BEGIN_SRC dockerfile
-    FROM eauc/emacs-org as emacs
+    FROM emacs-org as emacs
     #+END_SRC
 
-*** Tangle source
+*** Tangle & publish source
 
     Copy Org project files.
     #+BEGIN_SRC dockerfile
@@ -27,24 +27,16 @@
 
     Tangle all source code.
 
-    Produces files in =src/= and =public/=.
+    Produces files in =src/, public/, doc/=.
     #+BEGIN_SRC dockerfile
-    RUN HOME=/home/emacs emacs --batch \
-	-l "/home/emacs/elisp/init.el" \
-	-l "/home/emacs/elisp/tangle-all.el" \
-	--eval "(tangle-all \"org\")"
+    RUN emacs --batch -l "/root/.emacs.d/init.el" \
+        --eval "(tangle-all \"org\")" \
+        --eval "(publish-all \"Demo React\" \"org\" \"docs\")"
     #+END_SRC
 
-*** Publish documentation
-
-    Publish all HTML documentation.
-
-    Produces files in =doc/=.
+    Copy emacs theme for docs.
     #+BEGIN_SRC dockerfile
-    RUN HOME=/home/emacs emacs --batch \
-	-l "/home/emacs/elisp/init.el" \
-	-l "/home/emacs/elisp/publish-all.el" \
-	--eval "(publish-all \"Demo React\" \"org\" \"docs\")"
+    RUN cp /root/theme.css /app/docs/
     #+END_SRC
 
 ** Compile react app
@@ -61,9 +53,8 @@
    #+BEGIN_SRC dockerfile
    WORKDIR /app
    COPY --from=emacs /app/package.json .
-   COPY yarn.lock .
-   RUN npm install -g yarn
-   RUN yarn install
+   COPY package-lock.json .
+   RUN npm install
    #+END_SRC
 
    Copy files produced by emacs-org image.
@@ -136,7 +127,7 @@
      - ./src:/app/src
      - ./public:/app/public
      - ./package.json:/app/package.json
-     - ./yarn.lock:/app/yarn.lock
+     - ./package-lock.json:/app/package-lock.json
    #+END_SRC
 
 * Node

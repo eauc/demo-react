@@ -1,21 +1,16 @@
-FROM eauc/emacs-org as emacs
+FROM emacs-org as emacs
 WORKDIR /app
 COPY ./org ./org
-RUN HOME=/home/emacs emacs --batch \
-    -l "/home/emacs/elisp/init.el" \
-    -l "/home/emacs/elisp/tangle-all.el" \
-    --eval "(tangle-all \"org\")"
-RUN HOME=/home/emacs emacs --batch \
-    -l "/home/emacs/elisp/init.el" \
-    -l "/home/emacs/elisp/publish-all.el" \
+RUN emacs --batch -l "/root/.emacs.d/init.el" \
+    --eval "(tangle-all \"org\")" \
     --eval "(publish-all \"Demo React\" \"org\" \"docs\")"
+RUN cp /root/theme.css /app/docs/
 
 FROM node:8 as node
 WORKDIR /app
 COPY --from=emacs /app/package.json .
-COPY yarn.lock .
-RUN npm install -g yarn
-RUN yarn install
+COPY package-lock.json .
+RUN npm install
 COPY --from=emacs /app/src ./src
 COPY --from=emacs /app/public ./public
 RUN npm run build
