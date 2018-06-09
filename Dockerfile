@@ -13,6 +13,8 @@ COPY package-lock.json .
 RUN npm install
 COPY --from=emacs /app/src ./src
 COPY --from=emacs /app/public ./public
+COPY --from=emacs /app/.babelrc .
+COPY --from=emacs /app/webpack.config.js .
 RUN npm run build
 
 FROM nginx as server

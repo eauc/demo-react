@@ -14,3 +14,5 @@ services:
       - ./public:/app/public
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
+      - ./.babelrc:/app/.babelrc
+      - ./webpack.config.js:/app/webpack.config.js

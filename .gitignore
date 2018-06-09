@@ -28,3 +28,5 @@ docs/
 public/
 org/index.org
 nginx.conf.template
+.babelrc
+webpack.config.js
