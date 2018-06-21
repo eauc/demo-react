@@ -6,7 +6,7 @@ RUN emacs --batch -l "/root/.emacs.d/init.el" \
     --eval "(publish-all \"Demo React\" \"org\" \"docs\")"
 RUN cp /root/theme.css /app/docs/
 
-FROM node:8 as node
+FROM node:10 as node
 WORKDIR /app
 COPY --from=emacs /app/package.json .
 COPY package-lock.json .

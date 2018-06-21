@@ -32,14 +32,24 @@
   #+END_SRC
 
   Create store.
+  - enable Webpack hot module replacement for reducers. Redux does not implicitly reload reducers anymore. We need to explicitly reload them when they change.
   #+NAME: redux-store-init
   #+BEGIN_SRC js
-  const store = createStore(
-    combineReducers(reducers),
-    composeEnhancers(applyMiddleware(
-      thunk
-    ))
-  );
+  export function configureStore() {
+    const store = createStore(
+      combineReducers(reducers),
+      composeEnhancers(applyMiddleware(
+        thunk
+      ))
+    );
+    if (module.hot) {
+      module.hot.accept('./reducers', () => {
+        const nextReducer = require('./reducers/index');
+        store.replaceReducer(nextReducer);
+      });
+    }
+    return store;
+  };
   #+END_SRC
 
 ** Mount root component
@@ -50,7 +60,7 @@
   #+NAME: mount-root-component
   #+BEGIN_SRC js
   ReactDOM.render(
-      <Root />,
+      <Root store={store} />,
     document.getElementById('root'),
     () => { store.dispatch(actions.fetchTasks()); }
   );
@@ -65,13 +75,13 @@
 
   #+NAME: root-component
   #+BEGIN_SRC jsx
-  const Root = () => (
+  export const Root = hot(module)(({store}) => (
     <Provider store={store}>
       <BrowserRouter>
 	<AppShell />
       </BrowserRouter>
     </Provider>
-  );
+  ));
   #+END_SRC
 
 ** AppShell
@@ -154,26 +164,41 @@
   #+BEGIN_SRC js :tangle ../src/index.js :noweb yes :mkdirp yes
   import React from "react";
   import ReactDOM from "react-dom";
-  import {BrowserRouter} from "react-router-dom";
 
-  import {applyMiddleware, createStore, combineReducers, compose} from "redux";
-  import thunk from "redux-thunk";
-  import {Provider} from "react-redux";
-
-  import {AppShell} from "./components/AppShell";
-  import reducers from "./reducers";
+  import {Root} from "./components/Root";
   import actions from "./actions";
+  import {configureStore} from "./store";
   import "./index.css";
 
-  <<redux-devtools-init>>
-  <<redux-store-init>>
-
-  <<root-component>>
+  const store = configureStore();
 
   <<mount-root-component>>
   #+END_SRC
 
+** Store
+
+  #+BEGIN_SRC js :tangle ../src/store.js :noweb yes :mkdirp yes
+  import {applyMiddleware, createStore, combineReducers, compose} from "redux";
+  import thunk from "redux-thunk";
+
+  import reducers from "./reducers";
+
+  <<redux-devtools-init>>
+  <<redux-store-init>>
+  #+END_SRC
+
 ** Components
+
+  #+BEGIN_SRC js :tangle ../src/components/Root.js :noweb yes :mkdirp yes
+  import React from "react";
+  import {BrowserRouter} from "react-router-dom";
+  import {hot} from "react-hot-loader";
+  import {AppShell} from "./AppShell";
+
+  import {Provider} from "react-redux";
+
+  <<root-component>>
+  #+END_SRC
 
   #+BEGIN_SRC js :tangle ../src/components/AppShell.js :noweb yes :mkdirp yes
   import React from "react";

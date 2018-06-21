@@ -7,15 +7,15 @@
 
   #+NAME: home-page
   #+BEGIN_SRC jsx
-  export const HomePage = ({example}) => (
-    <Grid>
-      <Row>
-	<Col>
-	  <TasksListContainer />
-	</Col>
-      </Row>
-    </Grid>
-  );
+    export const HomePage = ({example}) => (
+      <Grid>
+        <Row>
+          <Col>
+            <TasksListContainer />
+          </Col>
+        </Row>
+      </Grid>
+    );
   #+END_SRC
 
 * Test

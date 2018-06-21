@@ -46,7 +46,7 @@
 
    Node base image.
    #+BEGIN_SRC dockerfile
-   FROM node:8 as node
+   FROM node:10 as node
    #+END_SRC
 
    Install node packages.
@@ -117,10 +117,13 @@
    #+END_SRC
 
    Starts dev server.
+   - export port 3000 for main server.
+   - export port 8081 for hot-reload websocket.
    #+BEGIN_SRC yaml
    command: npm start
    ports:
      - "3000:3000"
+     - "8081:8081"
    #+END_SRC
 
    Mount all local directories containing tangled files.
@@ -148,7 +151,7 @@
    Webpack dev server.
    #+NAME: deps-webpack-server
    #+BEGIN_SRC json
-   "webpack-dev-server": "^3.1.4"
+   "webpack-serve": "^1.0.3"
    #+END_SRC
 
    Babel transpiler.
@@ -159,6 +162,12 @@
    "babel-preset-react": "^6.24.1",
    "babel-core": "^6.26.3",
    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+   #+END_SRC
+
+   React HMR.
+   #+NAME: deps-react-hmr
+   #+BEGIN_SRC json
+   "react-hot-loader": "^4.3.3"
    #+END_SRC
 
    Style loader.
@@ -234,6 +243,12 @@
 
 ** Build configuration
 
+   Build mode based on =NODE_ENV=.
+   #+NAME: webpack-mode
+   #+BEGIN_SRC json
+   "mode": (process.env.NODE_ENV === "production") ? "production" : "development"
+   #+END_SRC
+
    Basic build I/O.
    #+NAME: webpack-io
    #+BEGIN_SRC json
@@ -259,13 +274,17 @@
    Babel config.
    - react (JSX) support.
    - allows es7 object spread.
+   - include react-hot-loader plugin for HMR.
    #+BEGIN_SRC json :tangle ../.babelrc
    {
      "presets": [
        "env",
        "react"
      ],
-     "plugins": ["transform-object-rest-spread"]
+     "plugins": [
+       "react-hot-loader/babel",
+       "transform-object-rest-spread"
+     ]
    }
    #+END_SRC
 
@@ -311,8 +330,8 @@
    - serve on all interfaces, port 3000.
    #+NAME: scripts-react
    #+BEGIN_SRC json
-   "start-js": "webpack-dev-server --mode development --hot --host 0.0.0.0 --port 3000",
-   "build-js": "webpack --mode production"
+   "start-js": "NODE_ENV=development webpack-serve --hot --host 0.0.0.0 --port 3000",
+   "build-js": "NODE_ENV=production webpack"
    #+END_SRC
 
    SASS builds.
@@ -405,6 +424,7 @@
          <<deps-copy>>,
          <<deps-css>>,
          <<deps-html>>,
+         <<deps-react-hmr>>,
          <<deps-webpack>>,
          <<deps-webpack-server>>,
          <<deps-sass>>
@@ -421,10 +441,12 @@
 
    #+BEGIN_SRC js :tangle ../webpack.config.js :noweb yes
    const path = require("path");
+   const webpack = require("webpack");
    const CopyWebpackPlugin = require("copy-webpack-plugin");
    const HtmlWebpackPlugin = require("html-webpack-plugin");
 
    module.exports = {
+     <<webpack-mode>>,
      <<webpack-io>>,
      module: {
        rules: [
@@ -433,6 +455,7 @@
        ]
      },
      plugins: [
+       new webpack.ProgressPlugin(),
        <<webpack-copy-plugin>>,
        <<webpack-html-plugin>>
      ]
