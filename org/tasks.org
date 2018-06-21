@@ -82,7 +82,7 @@
    #+BEGIN_SRC js
    export function toggleTaskDone({id}) {
      return new Promise((resolve) => {
-       setTimeout(resolve, 1000);
+       setTimeout(resolve, 200);
      }).then(() => {
        const task = R.prop(id, FAKE_DATA);
        if (R.isNil(task)) {
@@ -117,10 +117,10 @@
    #+BEGIN_SRC js
    export function fetchTasks() {
      return (dispatch) => {
-       dispatch({type: "TASKS_FETCH_ENTRIES"});
+       dispatch({type: "TASKS/FETCH_ENTRIES"});
        return api.fetchTasks()
          .then(({entries}) => {
-           dispatch({type: "TASKS_SET_ENTRIES", entries});
+           dispatch({type: "TASKS/SET_ENTRIES", entries});
          });
      };
    }
@@ -136,10 +136,10 @@
    #+BEGIN_SRC js
    export function toggleTaskDone({id}) {
      return (dispatch) => {
-       dispatch({type: "TASKS_TOGGLE_DONE", id});
+       dispatch({type: "TASKS/TOGGLE_DONE", id});
        return api.toggleTaskDone({id})
 	 .then(({entry}) => {
-	   dispatch({type: "TASKS_UPDATE_ENTRY", id, entry});
+	   dispatch({type: "TASKS/UPDATE_ENTRY", id, entry});
 	 });
      };
    }
@@ -155,7 +155,7 @@
    - set fetching flag.
 
    #+BEGIN_SRC js
-   case "TASKS_FETCH_ENTRIES":
+   case "TASKS/FETCH_ENTRIES":
    {
      return R.assoc("fetching", true, state);
    }
@@ -167,7 +167,7 @@
    - set tasks entries state.
 
    #+BEGIN_SRC js
-   case "TASKS_SET_ENTRIES":
+   case "TASKS/SET_ENTRIES":
    {
      return R.pipe(
        R.assoc("fetching", false),
@@ -182,7 +182,7 @@
    - update task entry.
 
    #+BEGIN_SRC js
-   case "TASKS_UPDATE_ENTRY":
+   case "TASKS/UPDATE_ENTRY":
    {
      return R.pipe(
        R.assoc("fetching", false),
@@ -197,7 +197,7 @@
    - eagerly update task entry.
      
    #+BEGIN_SRC js
-   case "TASKS_TOGGLE_DONE":
+   case "TASKS/TOGGLE_DONE":
    {
      return R.pipe(
        R.assoc("fetching", true),
