@@ -8,8 +8,7 @@ RUN cp /root/theme.css /app/docs/
 
 FROM node:10 as node
 WORKDIR /app
-COPY --from=emacs /app/package.json .
-COPY package-lock.json .
+COPY package*.json ./
 RUN npm install
 COPY --from=emacs /app/src ./src
 COPY --from=emacs /app/public ./public

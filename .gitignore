@@ -21,7 +21,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # project
-package.json
 org/sitemap.org
 src/
 docs/

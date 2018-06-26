@@ -4,7 +4,6 @@
 [[./index.html][Documentation index]]
 
 * Build
-
 ** Compile org files
    :PROPERTIES:
    :header-args: :noweb-ref docker-org
@@ -52,8 +51,7 @@
    Install node packages.
    #+BEGIN_SRC dockerfile
    WORKDIR /app
-   COPY --from=emacs /app/package.json .
-   COPY package-lock.json .
+   COPY package*.json ./
    RUN npm install
    #+END_SRC
 
@@ -138,109 +136,6 @@
    #+END_SRC
 
 * Node
-
-** Development dependencies
-
-   Webpack builder.
-   #+NAME: deps-webpack
-   #+BEGIN_SRC json
-   "webpack-cli": "3.0.3",
-   "webpack": "^4.12.0"
-   #+END_SRC
-
-   Webpack dev server.
-   #+NAME: deps-webpack-server
-   #+BEGIN_SRC json
-   "webpack-serve": "^1.0.3"
-   #+END_SRC
-
-   Babel transpiler.
-   #+NAME: deps-babel
-   #+BEGIN_SRC json
-   "babel-loader": "^7.1.4",
-   "babel-preset-env": "^1.7.0",
-   "babel-preset-react": "^6.24.1",
-   "babel-core": "^6.26.3",
-   "babel-plugin-transform-object-rest-spread": "^6.26.0"
-   #+END_SRC
-
-   React HMR.
-   #+NAME: deps-react-hmr
-   #+BEGIN_SRC json
-   "react-hot-loader": "^4.3.3"
-   #+END_SRC
-
-   Style loader.
-   #+NAME: deps-css
-   #+BEGIN_SRC json
-   "css-loader": "^0.28.11",
-   "style-loader": "^0.21.0"
-   #+END_SRC
-
-   Sass support.
-   #+NAME: deps-sass
-   #+BEGIN_SRC json
-   "node-sass-chokidar": "^1.2.2"
-   #+END_SRC
-
-   HTML generator.
-   #+NAME: deps-html
-   #+BEGIN_SRC json
-   "html-webpack-plugin": "^3.2.0"
-   #+END_SRC
-
-   Copy files.
-   #+NAME: deps-copy
-   #+BEGIN_SRC json
-   "copy-webpack-plugin": "^4.5.1"
-   #+END_SRC
-
-** Dependencies
-
-   - parallel script execution.
-   - Ramda functionnal library.
-   - fake data.
-   - unique Ids.
-   #+NAME: deps-utils
-   #+BEGIN_SRC json
-   "npm-run-all": "^4.1.2",
-   "ramda": "^0.25.0",
-   "faker": "^4.1.0",
-   "node-uuid": "^1.4.8"
-   #+END_SRC
-
-   React frontend.
-   #+NAME: deps-react
-   #+BEGIN_SRC json
-   "react": "^16.2.0",
-   "react-dom": "^16.2.0",
-   "classnames": "^2.2.5"
-   #+END_SRC
-
-   Router.
-   #+NAME: deps-router
-   #+BEGIN_SRC json
-   "react-router-dom": "^4.2.2"
-   #+END_SRC
-
-   Bootstrap:
-   - react-router-bootstrap is necessary to make NavLink work with react router.
-   #+NAME: deps-bootstrap
-   #+BEGIN_SRC json
-   "react-bootstrap": "^0.32.1",
-   "react-router-bootstrap": "^0.24.4"
-   #+END_SRC
-
-   Redux state management.
-   #+NAME: deps-redux
-   #+BEGIN_SRC json
-   "redux": "^3.7.2",
-   "redux-thunk": "^2.2.0",
-   "reselect": "^3.0.1",
-   "react-redux": "^5.0.7",
-   "redux-form": "^7.3.0"
-   #+END_SRC
-
 ** Build configuration
 
    Build mode based on =NODE_ENV=.
@@ -317,32 +212,7 @@
    })
    #+END_SRC
 
-** Scripts
-
-   #+NAME: scripts-main
-   #+BEGIN_SRC json
-   "start": "npm-run-all -p start-js watch-css",
-   "build": "npm-run-all build-css build-js"
-   #+END_SRC
-
-   Webpack dev server:
-   - hot-reload.
-   - serve on all interfaces, port 3000.
-   #+NAME: scripts-react
-   #+BEGIN_SRC json
-   "start-js": "NODE_ENV=development webpack-serve --hot --host 0.0.0.0 --port 3000",
-   "build-js": "NODE_ENV=production webpack"
-   #+END_SRC
-
-   SASS builds.
-   #+NAME: scripts-sass
-   #+BEGIN_SRC json
-   "build-css": "node-sass-chokidar src/ -o src/",
-   "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
-   #+END_SRC
-
 * Server
-
 ** nginx
 
    Need a default configuration template to inject the =$PORT= value.
@@ -376,7 +246,6 @@
    #+END_SRC
 
 * Files                                                            :noexport:
-
 ** Docker
 
    #+BEGIN_SRC sh :tangle ../.dockerignore
@@ -404,38 +273,6 @@
    #+END_SRC
 
 ** Node
-
-   Dependencies.
-
-   #+BEGIN_SRC json :tangle ../package.json :noweb yes
-   {
-     "name": "demo-react",
-     "version": "0.1.0",
-     "private": true,
-     "dependencies": {
-         <<deps-utils>>,
-         <<deps-react>>,
-         <<deps-router>>,
-         <<deps-bootstrap>>,
-         <<deps-redux>>
-     },
-     "devDependencies": {
-         <<deps-babel>>,
-         <<deps-copy>>,
-         <<deps-css>>,
-         <<deps-html>>,
-         <<deps-react-hmr>>,
-         <<deps-webpack>>,
-         <<deps-webpack-server>>,
-         <<deps-sass>>
-     },
-     "scripts": {
-         <<scripts-main>>,
-         <<scripts-react>>,
-         <<scripts-sass>>
-     }
-   }
-   #+END_SRC
 
    Webpack config.
 
