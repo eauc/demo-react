@@ -7,15 +7,13 @@
 
   #+NAME: home-page
   #+BEGIN_SRC jsx
-    export const HomePage = ({example}) => (
-      <Grid>
-        <Row>
-          <Col>
-            <TasksListContainer />
-          </Col>
-        </Row>
-      </Grid>
-    );
+  export const HomePage = ({example}) => (
+    <Segment basic className="rd-page">
+      <Container>
+        <TasksListContainer />
+      </Container>
+    </Segment>
+  );
   #+END_SRC
 
 * Test
@@ -23,25 +21,46 @@
   #+NAME: test-page
   #+BEGIN_SRC jsx
   export const TestPage = () => (
-    <Grid>
-      <Row>
-	<Col>
-	  Another test page !
-	  <TaskEdit />
-	</Col>
-      </Row>
-    </Grid>
+    <Segment basic className="rd-page">
+      <Container>
+        Another test page !
+        <TaskEdit />
+      </Container>
+    </Segment>
   );
+  #+END_SRC
+
+* COMMENT Styles
+  :PROPERTIES:
+  :header-args: :noweb-ref page-styles
+  :END:
+
+  - add margin at top to be below fixed menu.
+  - on small screen reset padding for more display space.
+
+  #+BEGIN_SRC css
+  .rd-page.segment {
+      margin-top: 3.5em;
+    
+      @media (max-width: 768px) {
+          padding: 0;
+      }
+  }
   #+END_SRC
 
 * Files :noexport:
 
   #+BEGIN_SRC js :tangle ../src/pages.js :noweb yes :mkdirp yes
   import React from "react";
-  import {Col, Grid, Row} from "react-bootstrap";
+  import {Container, Segment} from "semantic-ui-react";
   import TasksListContainer, {TaskEdit} from "./components/Tasks";
+  import "./components/Page.css";
 
   <<home-page>>
 
   <<test-page>>
   #+END_SRC
+
+   #+BEGIN_SRC js :tangle ../src/components/Page.scss :noweb yes :mkdirp yes
+   <<page-styles>>
+   #+END_SRC

@@ -219,17 +219,17 @@
 
    #+BEGIN_SRC jsx
    const Task = ({id, title, done, toggleTaskDone}) => (
-     <tr className="tasks-item">
-       <td className="tasks-done"
-	   onClick={() => toggleTaskDone({id})}>
-	 {done ? "✔" : "□"}
-       </td>
-       <td className={classNames({
-	     done,
-	   })}>
-	 {title}
-       </td>
-     </tr>
+     <Table.Row className="tasks-item">
+       <Table.Cell className="tasks-done"
+           onClick={() => toggleTaskDone({id})}>
+         {done ? "✔" : "□"}
+       </Table.Cell>
+       <Table.Cell className={classNames({
+             done,
+           })}>
+         {title}
+       </Table.Cell>
+     </Table.Row>
    );
    #+END_SRC
 
@@ -270,9 +270,9 @@
 
      return (
        <Table className="tasks-list" hover>
-	 <tbody>
-	   {tasks}
-	 </tbody>
+         <Table.Body>
+           {tasks}
+         </Table.Body>
        </Table>
      );
    };
@@ -299,21 +299,6 @@
   :PROPERTIES:
   :header-args: :noweb-ref tasks-styles
   :END:
-
-  Remove the rows top border from Bootstrap.
-  We need to have the same selector weight as Bootstrap's.
-
-  #+BEGIN_SRC css
-  .tasks-list {
-      tbody {
-	  tr {
-	      td {
-		  border-top: 0;
-	      }
-	  }
-      }
-  }
-  #+END_SRC
 
   Display a clicking cursor on rows to show the user can toggle =done= state or edit task.
   When task is done, strike the title.
@@ -407,8 +392,8 @@
    import * as R from "ramda";
    import React from "react";
    import {connect} from "react-redux";
-   import {Table} from "react-bootstrap";
    import {Field, reduxForm} from "redux-form";
+   import {Table} from "semantic-ui-react";
    import classNames from "classnames";
    import actions from "../actions";
    import {getTasksList} from "../selectors/tasks";
